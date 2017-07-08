@@ -1,0 +1,50 @@
+apply plugin: "eclipse"
+apply plugin: "java"
+apply plugin: "application"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	compile files('lib/axml-2.0.jar')
+  	compile files('lib/soot-trunk.jar')
+  	compile files('lib/soot-infoflow.jar')
+  	compile files('lib/soot-infoflow-android.jar')
+  	
+  	compile group: 'commons-io', name: 'commons-io', version: '2.5'
+}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged { 
+                def lib = entries.find { it.path.contains 'soot-trunk.jar' }
+                lib.javadocPath = fileReference(file('lib/soot-trunk-javadoc.jar'))
+                lib.sourcePath = fileReference(file('lib/soot-trunk-sources.jar'))
+            }
+        }
+    }
+}
+
+eclipseJdt.doLast{
+	File f = file(".settings/org.eclipse.jdt.core")
+	f.write("eclipse.preferences.version=1\n")
+	f.write("org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled\n")
+	f.write("org.eclipse.jdt.core.compiler.codegen.methodParameters=do not generate\n")
+	f.write("org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.7\n")
+	f.write("org.eclipse.jdt.core.compiler.codegen.unusedLocal=preserve\n")
+	f.write("org.eclipse.jdt.core.compiler.compliance=1.7\n")
+	f.write("org.eclipse.jdt.core.compiler.debug.lineNumber=generate\n")
+	f.write("org.eclipse.jdt.core.compiler.debug.localVariable=generate\n")
+	f.write("org.eclipse.jdt.core.compiler.debug.sourceFile=generate\n")
+	f.write("org.eclipse.jdt.core.compiler.problem.assertIdentifier=error\n")
+	f.write("org.eclipse.jdt.core.compiler.problem.enumIdentifier=error\n")
+	f.append("org.eclipse.jdt.core.compiler.source=1.7")
+}
+
+mainClassName = 'analyzer.SootAnalyzer'
+
