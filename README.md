@@ -1,4 +1,4 @@
-# Project Title
+# soot-android
 An Example of using Soot + Android
 
 ## Getting Started
